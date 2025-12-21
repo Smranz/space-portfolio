@@ -209,10 +209,11 @@ const CommandCenter = () => {
                         const getScale = () => {
                             if (hoveredIndex === null) return 1;
                             const distance = Math.abs(index - hoveredIndex);
-                            if (distance === 0) return 1.4; // Hovered button
-                            if (distance === 1) return 1.2; // Adjacent buttons
-                            if (distance === 2) return 1.1; // Next adjacent
-                            return 1; // Far buttons
+                            if (distance === 0) return 1.5; // Hovered button - biggest
+                            if (distance === 1) return 1.15; // Adjacent buttons - slightly smaller
+                            if (distance === 2) return 0.9; // Further - smaller
+                            if (distance === 3) return 0.8; // Even further - smaller
+                            return 0.7; // Far buttons - smallest
                         };
 
                         // Calculate horizontal offset to prevent overlap
