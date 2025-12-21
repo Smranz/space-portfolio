@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  --deep-void: #030014;
+  --starlight: #ffffff;
+  --reactor-core: #00e5ff;
+  --warning: #f59e0b;
+  --neon-purple: #7042f8;
+  --glass: rgba(255, 255, 255, 0.05);
+}
+
+@theme inline {
+  --color-deep-void: var(--deep-void);
+  --color-starlight: var(--starlight);
+  --color-reactor-core: var(--reactor-core);
+  --color-warning: var(--warning);
+  --color-neon-purple: var(--neon-purple);
+  --color-glass: var(--glass);
+
+  --font-inter: var(--font-inter);
+  --font-orbitron: var(--font-orbitron);
+}
+
+body {
+  background: var(--deep-void);
+  color: var(--starlight);
+  overflow-x: hidden;
+}
+
+/* Scrollbar Styling for that technical look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--deep-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--reactor-core);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-purple);
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translateY(-12px);
+  }
+
+  50% {
+    transform: translateY(0px);
+  }
+
+  75% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Custom Scrollbar for Windshield Content */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thumb-cyan-500::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.5);
+  border-radius: 3px;
+}
+
+.scrollbar-thumb-cyan-500::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.8);
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
