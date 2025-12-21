@@ -15,15 +15,6 @@ const Hero = () => {
                 className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full max-w-6xl z-[20]"
             >
                 <div className="h-full w-full flex flex-col gap-3 justify-center m-auto text-start">
-                    <motion.div
-                        variants={slideInFromTop}
-                        className="Welcome-box py-[6px] px-[12px] border border-[#7042f88b] opacity-[0.9] rounded-full flex flex-row items-center justify-center w-fit bg-[#0300145e]"
-                    >
-                        <Sparkles className="text-[#b49bff] mr-[8px] h-4 w-4" />
-                        <h1 className="Welcome-text text-[11px] font-bold text-[#b49bff]">
-                            Full Stack Developer
-                        </h1>
-                    </motion.div>
 
                     <motion.div
                         variants={slideInFromLeft(0.5)}
