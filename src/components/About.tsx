@@ -53,8 +53,8 @@ const About = () => {
                         const currentX = centerX + (Math.sin(p * frequency) * amplitude);
 
                         // Size tapers off
-                        // Head is 60px (Thicker), Tail end is ~30px
-                        const size = 60 - (i * 3);
+                        // Head is 40px (Requested), Tail end is ~10px
+                        const size = 40 - (i * 3);
                         const opacity = 1; // Keep opaque for the mask
 
                         maskParts.push(`radial-gradient(circle ${size}px at ${currentX}px ${currentY}px, black 100%, transparent 100%)`);
