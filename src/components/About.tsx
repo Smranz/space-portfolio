@@ -9,9 +9,9 @@ const About = () => {
     return (
         <section
             id="about-me"
-            className="flex flex-col items-center justify-center gap-2 h-full relative overflow-hidden py-2"
+            className="flex flex-col items-center justify-start gap-4 h-full relative overflow-y-auto py-8 no-scrollbar"
         >
-            <div className="flex flex-col items-center justify-center w-full max-w-6xl z-[20] px-4 h-full">
+            <div className="flex flex-col items-center w-full max-w-6xl z-[20] px-4 shrink-0">
                 {/* Introduction Section with Profile Picture */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -106,7 +106,7 @@ const About = () => {
                     </div>
                 </motion.div>
 
-                <h1 className="text-xl md:text-[28px] font-semibold text-white py-2 md:py-3 font-orbitron text-center w-full">
+                <h1 className="text-xl md:text-[28px] font-semibold text-white py-2 md:py-3 font-orbitron text-center w-full mt-24">
                     Crew Profile
                 </h1>
 
