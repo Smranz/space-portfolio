@@ -9,15 +9,15 @@ const About = () => {
     return (
         <section
             id="about-me"
-            className="flex flex-col items-center justify-center gap-2 h-full relative overflow-hidden py-4"
+            className="flex flex-col items-center justify-center gap-2 h-full relative overflow-hidden py-2"
         >
-            <div className="flex flex-col items-center justify-center w-full max-w-6xl z-[20] px-4">
+            <div className="flex flex-col items-center justify-center w-full max-w-6xl z-[20] px-4 h-full">
                 {/* Introduction Section with Profile Picture */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="w-full mb-4 flex flex-col md:flex-row items-center gap-4 md:gap-6 p-4 md:p-5 rounded-xl border border-cyan-500/30 bg-[#0300145e] backdrop-blur-md"
+                    className="w-full flex flex-col md:flex-row items-center gap-4 md:gap-6 p-4 md:p-5 rounded-xl border border-cyan-500/30 bg-[#0300145e] backdrop-blur-md"
                 >
                     {/* Profile Picture */}
                     {/* Profile Picture */}
@@ -31,7 +31,7 @@ const About = () => {
                             e.currentTarget.style.setProperty('--y', `${y}px`);
                         }}
                     >
-                        <div className="w-[300px] h-[400px] md:w-[350px] md:h-[450px] relative overflow-hidden group">
+                        <div className="w-[300px] h-[400px] md:w-[350px] md:h-[450px] relative overflow-hidden group border-2 border-cyan-500/50 rounded-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm">
 
                             {/* Base Image (Normal) - Always Visible */}
                             <div className="absolute inset-0 z-10">
