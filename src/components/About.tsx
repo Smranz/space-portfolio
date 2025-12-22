@@ -49,8 +49,20 @@ const About = () => {
                             <div
                                 className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 style={{
-                                    maskImage: "linear-gradient(105deg, black 0%, black calc(var(--x) - 10px), transparent calc(var(--x) + 10px), transparent 100%)",
-                                    WebkitMaskImage: "linear-gradient(105deg, black 0%, black calc(var(--x) - 10px), transparent calc(var(--x) + 10px), transparent 100%)",
+                                    maskImage: `
+                                        radial-gradient(circle 40px at var(--x) var(--y), black 100%, transparent 100%),
+                                        radial-gradient(circle 30px at calc(var(--x) + 20px) calc(var(--y) - 15px), black 100%, transparent 100%),
+                                        radial-gradient(circle 30px at calc(var(--x) - 20px) calc(var(--y) + 10px), black 100%, transparent 100%),
+                                        radial-gradient(circle 25px at calc(var(--x) + 15px) calc(var(--y) + 20px), black 100%, transparent 100%),
+                                        radial-gradient(circle 25px at calc(var(--x) - 15px) calc(var(--y) - 20px), black 100%, transparent 100%)
+                                    `,
+                                    WebkitMaskImage: `
+                                        radial-gradient(circle 40px at var(--x) var(--y), black 100%, transparent 100%),
+                                        radial-gradient(circle 30px at calc(var(--x) + 20px) calc(var(--y) - 15px), black 100%, transparent 100%),
+                                        radial-gradient(circle 30px at calc(var(--x) - 20px) calc(var(--y) + 10px), black 100%, transparent 100%),
+                                        radial-gradient(circle 25px at calc(var(--x) + 15px) calc(var(--y) + 20px), black 100%, transparent 100%),
+                                        radial-gradient(circle 25px at calc(var(--x) - 15px) calc(var(--y) - 20px), black 100%, transparent 100%)
+                                    `,
                                 }}
                             >
                                 <NextImage
