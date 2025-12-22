@@ -20,19 +20,34 @@ const About = () => {
                     className="w-full mb-4 flex flex-col md:flex-row items-center gap-4 md:gap-6 p-4 md:p-5 rounded-xl border border-cyan-500/30 bg-[#0300145e] backdrop-blur-md"
                 >
                     {/* Profile Picture */}
-                    <div className="relative flex-shrink-0">
+                    {/* Profile Picture */}
+                    <div className="relative flex-shrink-0 group cursor-pointer">
                         <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50 relative overflow-hidden">
-                            <NextImage
-                                src="/profile-optimized.jpg"
-                                alt="Samran Zahid"
-                                fill
-                                sizes="(max-width: 768px) 160px, 176px"
-                                className="rounded-full object-cover"
-                                priority
-                            />
+                            {/* Hover Image (Behind) - Always visible but covered by default */}
+                            <div className="absolute inset-0 rounded-full overflow-hidden">
+                                <NextImage
+                                    src="/profile-hover.png"
+                                    alt="Samran Form"
+                                    fill
+                                    sizes="(max-width: 768px) 160px, 176px"
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
+                            {/* Default Image (Front) - Fades out on hover */}
+                            <div className="absolute inset-0 rounded-full overflow-hidden transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10">
+                                <NextImage
+                                    src="/profile-pic.png"
+                                    alt="Samran Zahid"
+                                    fill
+                                    sizes="(max-width: 768px) 160px, 176px"
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
                         </div>
                         {/* Status Indicator */}
-                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-10"></div>
+                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-20"></div>
                     </div>
 
                     {/* Introduction Text */}
