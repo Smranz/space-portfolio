@@ -39,8 +39,6 @@ const HudOverlay = () => {
             <div className="absolute bottom-5 left-5 w-64 h-24 border-l-2 border-b-2 border-cyan-500/50 rounded-bl-xl opacity-80" />
             <div className="absolute bottom-8 left-8 text-[10px] font-mono text-cyan-500/80 tracking-widest">
                 COORDINATES: 34.0522° N, 118.2437° W
-                <br />
-                STATUS: NOMINAL
             </div>
 
             {/* Bottom Right */}

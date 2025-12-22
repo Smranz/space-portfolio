@@ -284,8 +284,8 @@ const CommandCenter = () => {
                 </div>
 
                 {/* Bottom Info Bar */}
-                <div className="absolute bottom-2 left-4 text-[8px] md:text-[10px] font-mono text-cyan-400/70">
-                    <span>STATUS: NOMINAL</span>
+                <div className={`absolute bottom-2 left-4 text-[8px] md:text-[10px] font-mono ${activeView === "attack" ? "text-red-500 animate-pulse font-bold" : "text-cyan-400/70"}`}>
+                    <span>{activeView === "attack" ? "Status: Underattack" : "Status: Normal"}</span>
                     <span className="hidden md:inline ml-2">|</span>
                     <span className="hidden md:inline ml-2">ENCRYPTION: AES-256</span>
                 </div>
