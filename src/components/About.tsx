@@ -31,40 +31,40 @@ const About = () => {
                             e.currentTarget.style.setProperty('--y', `${y}px`);
                         }}
                     >
-                        <div className="w-[300px] h-[400px] md:w-[350px] md:h-[450px] relative overflow-hidden group">
+                        <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50 relative overflow-hidden group">
 
                             {/* Base Image (Normal) - Always Visible */}
-                            <div className="absolute inset-0 z-10">
+                            <div className="absolute inset-0 rounded-full overflow-hidden z-10">
                                 <NextImage
                                     src="/profile-pic.png"
                                     alt="Samran Zahid"
                                     fill
-                                    sizes="(max-width: 768px) 300px, 350px"
-                                    className="object-contain drop-shadow-[0_0_15px_rgba(0,229,255,0.3)]"
+                                    sizes="(max-width: 768px) 160px, 176px"
+                                    className="object-cover"
                                     priority
                                 />
                             </div>
 
                             {/* Reveal Image (Hover) - Masked by Cursor */}
                             <div
-                                className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                className="absolute inset-0 rounded-full overflow-hidden z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 style={{
-                                    maskImage: "radial-gradient(circle 120px at var(--x) var(--y), black 95%, transparent 100%)",
-                                    WebkitMaskImage: "radial-gradient(circle 120px at var(--x) var(--y), black 95%, transparent 100%)",
+                                    maskImage: "radial-gradient(circle 100px at var(--x) var(--y), black 95%, transparent 100%)",
+                                    WebkitMaskImage: "radial-gradient(circle 100px at var(--x) var(--y), black 95%, transparent 100%)",
                                 }}
                             >
                                 <NextImage
                                     src="/profile-hover.png"
                                     alt="Samran Form"
                                     fill
-                                    sizes="(max-width: 768px) 300px, 350px"
-                                    className="object-contain drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]"
+                                    sizes="(max-width: 768px) 160px, 176px"
+                                    className="object-cover"
                                     priority
                                 />
                             </div>
                         </div>
                         {/* Status Indicator */}
-                        <div className="absolute bottom-4 right-8 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-30 shadow-[0_0_10px_#22c55e]"></div>
+                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-30"></div>
                     </div>
 
                     {/* Introduction Text */}
