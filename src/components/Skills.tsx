@@ -282,105 +282,188 @@ export default function Skills() {
                             {/* Info Card */}
                             <AnimatePresence>
                                 {isSelected && (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.8 }}
-                                        transition={{ type: "spring", damping: 20 }}
-                                        className="fixed w-72 md:w-80 bg-[#030014]/95 backdrop-blur-xl border-2 rounded-lg p-4 pointer-events-auto overflow-hidden"
-                                        style={{
-                                            // Safe positioning logic
-                                            left: isMobile ? '50%' : (planet.x > 70 ? '10%' : (planet.x < 30 ? `${planet.x + 25}%` : `${planet.x}%`)),
-                                            top: isMobile ? '50%' : (planet.y > 50 ? '30%' : `${planet.y}%`),
-                                            transform: isMobile
-                                                ? 'translate(-50%, -50%)'
-                                                : (planet.x > 70
-                                                    ? 'translateY(-50%)'
-                                                    : (planet.x < 30
-                                                        ? 'translateY(-50%)'
-                                                        : (planet.x > 50
-                                                            ? 'translate(calc(-100% - 200px), -50%)'
-                                                            : 'translate(200px, -50%)'))),
-                                            width: isMobile ? '90%' : undefined,
-                                            maxWidth: isMobile ? '350px' : undefined,
-                                            borderColor: planet.color,
-                                            boxShadow: `0 0 30px ${planet.color}40`,
-                                            zIndex: 200,
-                                        }}
-                                    >
-                                        {/* Close button */}
-                                        <button
-                                            onClick={() => setSelected(null)}
-                                            className="absolute top-3 right-3 text-gray-400 hover:text-white z-10"
-                                        >
-                                            <X size={20} />
-                                        </button>
-
-                                        {/* Header */}
-                                        <div className="flex items-center gap-3 mb-3 pb-3 border-b" style={{ borderColor: `${planet.color}30` }}>
-                                            <div
-                                                className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
-                                                style={{ borderColor: planet.color, backgroundColor: `${planet.color}15` }}
-                                            >
-                                                <img src={planet.icon} alt={planet.name} className="w-8 h-8 object-contain" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-bold text-lg">{planet.name}</h3>
-                                                <div className="flex items-center gap-1">
-                                                    <Zap className="w-3 h-3 text-yellow-400" />
-                                                    <span className="text-xs font-mono" style={{ color: planet.color }}>{planet.level}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Description */}
-                                        <p className="text-gray-300 text-xs leading-relaxed mb-3">{planet.description}</p>
-
-                                        {/* Stats */}
-                                        <div className="grid grid-cols-2 gap-2 mb-3">
-                                            <div className="rounded p-2" style={{ backgroundColor: `${planet.color}10`, border: `1px solid ${planet.color}30` }}>
-                                                <div className="text-[10px] text-gray-400 font-mono">EXPERIENCE</div>
-                                                <div className="text-sm font-bold" style={{ color: planet.color }}>{planet.experience}</div>
-                                            </div>
-                                            <div className="bg-purple-500/10 border border-purple-500/30 rounded p-2">
-                                                <div className="text-[10px] text-gray-400 font-mono">PROJECTS</div>
-                                                <div className="text-sm text-purple-400 font-bold">{planet.projects.length}</div>
-                                            </div>
-                                        </div>
-
-                                        {/* Notable Missions */}
-                                        <div>
-                                            <div className="text-[10px] text-gray-400 font-mono mb-2 flex items-center gap-1">
-                                                <Star className="w-3 h-3" />
-                                                NOTABLE MISSIONS
-                                            </div>
-                                            <div className="flex flex-wrap gap-1">
-                                                {planet.projects.map((project, idx) => (
-                                                    <span
-                                                        key={idx}
-                                                        className="text-[9px] px-2 py-1 rounded-full"
-                                                        style={{
-                                                            backgroundColor: `${planet.color}10`,
-                                                            border: `1px solid ${planet.color}30`,
-                                                            color: planet.color
-                                                        }}
-                                                    >
-                                                        {project}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Scanning Animation */}
-                                        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+                                    <>
+                                        {isMobile ? (
+                                            // Mobile: Centered Modal with Backdrop
                                             <motion.div
-                                                className="absolute inset-x-0 h-[2px]"
-                                                style={{ backgroundColor: planet.color }}
-                                                animate={{ y: [0, 300] }}
-                                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                                            />
-                                        </div>
-                                    </motion.div>
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+                                            >
+                                                {/* Backdrop */}
+                                                <div
+                                                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                                                    onClick={() => setSelected(null)}
+                                                />
+
+                                                {/* Card */}
+                                                <motion.div
+                                                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                                                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                                                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                                                    className="w-full max-w-xs bg-[#030014]/95 border-2 rounded-xl p-5 relative z-10 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                                                    style={{ borderColor: planet.color }}
+                                                >
+                                                    {/* Close button */}
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelected(null);
+                                                        }}
+                                                        className="absolute top-3 right-3 text-gray-400 hover:text-white p-1"
+                                                    >
+                                                        <X size={20} />
+                                                    </button>
+
+                                                    {/* Header */}
+                                                    <div className="flex items-center gap-3 mb-4 pb-3 border-b" style={{ borderColor: `${planet.color}30` }}>
+                                                        <div
+                                                            className="w-12 h-12 rounded-full border-2 flex items-center justify-center shrink-0"
+                                                            style={{ borderColor: planet.color, backgroundColor: `${planet.color}15` }}
+                                                        >
+                                                            <img src={planet.icon} alt={planet.name} className="w-8 h-8 object-contain" />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className="text-white font-bold text-xl">{planet.name}</h3>
+                                                            <div className="flex items-center gap-1.5">
+                                                                <Zap className="w-3.5 h-3.5 text-yellow-400" />
+                                                                <span className="text-sm font-mono" style={{ color: planet.color }}>{planet.level}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Content */}
+                                                    <div className="space-y-4">
+                                                        <p className="text-gray-300 text-sm leading-relaxed">{planet.description}</p>
+
+                                                        <div className="grid grid-cols-2 gap-3">
+                                                            <div className="rounded-lg p-3 bg-black/20" style={{ border: `1px solid ${planet.color}30` }}>
+                                                                <div className="text-[10px] text-gray-500 font-mono mb-1">EXPERIENCE</div>
+                                                                <div className="text-base font-bold" style={{ color: planet.color }}>{planet.experience}</div>
+                                                            </div>
+                                                            <div className="rounded-lg p-3 bg-purple-500/10 border border-purple-500/30">
+                                                                <div className="text-[10px] text-purple-300/70 font-mono mb-1">PROJECTS</div>
+                                                                <div className="text-base text-purple-400 font-bold">{planet.projects.length}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <div className="text-[10px] text-gray-500 font-mono mb-2 flex items-center gap-1.5">
+                                                                <Star className="w-3 h-3" />
+                                                                NOTABLE MISSIONS
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                                {planet.projects.map((project, idx) => (
+                                                                    <span
+                                                                        key={idx}
+                                                                        className="text-[10px] px-2.5 py-1 rounded-full border bg-black/30"
+                                                                        style={{
+                                                                            borderColor: `${planet.color}30`,
+                                                                            color: planet.color
+                                                                        }}
+                                                                    >
+                                                                        {project}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            </motion.div>
+                                        ) : (
+                                            // Desktop: Floating Card
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.8 }}
+                                                transition={{ type: "spring", damping: 20 }}
+                                                className="fixed w-72 md:w-80 bg-[#030014]/95 backdrop-blur-xl border-2 rounded-lg p-4 pointer-events-auto overflow-hidden"
+                                                style={{
+                                                    left: planet.x > 70 ? '10%' : (planet.x < 30 ? `${planet.x + 25}%` : `${planet.x}%`),
+                                                    top: planet.y > 50 ? '30%' : `${planet.y}%`,
+                                                    transform: planet.x > 70
+                                                        ? 'translateY(-50%)'
+                                                        : (planet.x < 30
+                                                            ? 'translateY(-50%)'
+                                                            : (planet.x > 50
+                                                                ? 'translate(calc(-100% - 200px), -50%)'
+                                                                : 'translate(200px, -50%)')),
+                                                    borderColor: planet.color,
+                                                    boxShadow: `0 0 30px ${planet.color}40`,
+                                                    zIndex: 200,
+                                                }}
+                                            >
+                                                {/* Desktop Content (Simplified/Original) */}
+                                                <button
+                                                    onClick={() => setSelected(null)}
+                                                    className="absolute top-3 right-3 text-gray-400 hover:text-white z-10"
+                                                >
+                                                    <X size={20} />
+                                                </button>
+
+                                                <div className="flex items-center gap-3 mb-3 pb-3 border-b" style={{ borderColor: `${planet.color}30` }}>
+                                                    <div
+                                                        className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
+                                                        style={{ borderColor: planet.color, backgroundColor: `${planet.color}15` }}
+                                                    >
+                                                        <img src={planet.icon} alt={planet.name} className="w-8 h-8 object-contain" />
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="text-white font-bold text-lg">{planet.name}</h3>
+                                                        <div className="flex items-center gap-1">
+                                                            <Zap className="w-3 h-3 text-yellow-400" />
+                                                            <span className="text-xs font-mono" style={{ color: planet.color }}>{planet.level}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <p className="text-gray-300 text-xs leading-relaxed mb-3">{planet.description}</p>
+
+                                                <div className="grid grid-cols-2 gap-2 mb-3">
+                                                    <div className="rounded p-2" style={{ backgroundColor: `${planet.color}10`, border: `1px solid ${planet.color}30` }}>
+                                                        <div className="text-[10px] text-gray-400 font-mono">EXPERIENCE</div>
+                                                        <div className="text-sm font-bold" style={{ color: planet.color }}>{planet.experience}</div>
+                                                    </div>
+                                                    <div className="bg-purple-500/10 border border-purple-500/30 rounded p-2">
+                                                        <div className="text-[10px] text-gray-400 font-mono">PROJECTS</div>
+                                                        <div className="text-sm text-purple-400 font-bold">{planet.projects.length}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <div className="text-[10px] text-gray-400 font-mono mb-2 flex items-center gap-1">
+                                                        <Star className="w-3 h-3" />
+                                                        NOTABLE MISSIONS
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {planet.projects.map((project, idx) => (
+                                                            <span
+                                                                key={idx}
+                                                                className="text-[9px] px-2 py-1 rounded-full"
+                                                                style={{
+                                                                    backgroundColor: `${planet.color}10`,
+                                                                    border: `1px solid ${planet.color}30`,
+                                                                    color: planet.color
+                                                                }}
+                                                            >
+                                                                {project}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                {/* Scanning Animation */}
+                                                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+                                                    <motion.div
+                                                        className="absolute inset-x-0 h-[2px]"
+                                                        style={{ backgroundColor: planet.color }}
+                                                        animate={{ y: [0, 300] }}
+                                                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                    />
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </>
                                 )}
                             </AnimatePresence>
                         </div>
