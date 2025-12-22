@@ -49,8 +49,8 @@ const About = () => {
                             <div
                                 className="absolute inset-0 rounded-full overflow-hidden z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 style={{
-                                    maskImage: "radial-gradient(circle 60px at var(--x) var(--y), black 40%, transparent 100%)",
-                                    WebkitMaskImage: "radial-gradient(circle 60px at var(--x) var(--y), black 40%, transparent 100%)",
+                                    maskImage: "radial-gradient(circle 100px at var(--x) var(--y), black 95%, transparent 100%)",
+                                    WebkitMaskImage: "radial-gradient(circle 100px at var(--x) var(--y), black 95%, transparent 100%)",
                                 }}
                             >
                                 <NextImage
