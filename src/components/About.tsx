@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import NextImage from "next/image";
 import { Cpu, Code2, Globe } from "lucide-react";
 
 const About = () => {
+    const [isInteract, setIsInteract] = useState(false);
     return (
         <section
             id="about-me"
@@ -23,10 +24,22 @@ const About = () => {
                     {/* Profile Picture */}
                     <div
                         className="relative flex-shrink-0 cursor-pointer"
+                        onMouseEnter={() => setIsInteract(true)}
+                        onMouseLeave={() => setIsInteract(false)}
+                        onTouchStart={() => setIsInteract(true)}
+                        onTouchEnd={() => setIsInteract(false)}
                         onMouseMove={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
                             const x = e.clientX - rect.left;
                             const y = e.clientY - rect.top;
+                            e.currentTarget.style.setProperty('--x', `${x}px`);
+                            e.currentTarget.style.setProperty('--y', `${y}px`);
+                        }}
+                        onTouchMove={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const touch = e.touches[0];
+                            const x = touch.clientX - rect.left;
+                            const y = touch.clientY - rect.top;
                             e.currentTarget.style.setProperty('--x', `${x}px`);
                             e.currentTarget.style.setProperty('--y', `${y}px`);
                         }}
@@ -47,7 +60,7 @@ const About = () => {
 
                             {/* Reveal Image (Hover) - Masked by Cursor */}
                             <div
-                                className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                className={`absolute inset-0 z-20 transition-opacity duration-200 ${isInteract ? 'opacity-100' : 'opacity-0'}`}
                                 style={{
                                     maskImage: `
                                         radial-gradient(circle 40px at var(--x) var(--y), black 100%, transparent 100%),
