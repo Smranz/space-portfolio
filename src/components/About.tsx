@@ -31,7 +31,7 @@ const About = () => {
                             e.currentTarget.style.setProperty('--y', `${y}px`);
                         }}
                     >
-                        <div className="w-[300px] h-[400px] md:w-[350px] md:h-[450px] relative overflow-hidden group border-2 border-cyan-500/50 rounded-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm">
+                        <div className="w-[220px] h-[280px] md:w-[260px] md:h-[340px] relative overflow-hidden group border-2 border-cyan-500/50 rounded-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 backdrop-blur-sm">
 
                             {/* Base Image (Normal) - Always Visible */}
                             <div className="absolute inset-0 z-10">
@@ -39,7 +39,7 @@ const About = () => {
                                     src="/profile-pic.png"
                                     alt="Samran Zahid"
                                     fill
-                                    sizes="(max-width: 768px) 300px, 350px"
+                                    sizes="(max-width: 768px) 220px, 260px"
                                     className="object-contain drop-shadow-[0_0_15px_rgba(0,229,255,0.3)]"
                                     priority
                                 />
@@ -69,7 +69,7 @@ const About = () => {
                                     src="/profile-hover.png"
                                     alt="Samran Form"
                                     fill
-                                    sizes="(max-width: 768px) 300px, 350px"
+                                    sizes="(max-width: 768px) 220px, 260px"
                                     className="object-contain drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]"
                                     priority
                                 />
