@@ -1,12 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NextImage from "next/image";
 import { Cpu, Code2, Globe } from "lucide-react";
 
 const About = () => {
     const [isInteract, setIsInteract] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(true);
+
+    useEffect(() => {
+        // Snake Animation on Mount
+        let startTime = Date.now();
+        const duration = 2000; // 2 seconds
+
+        const animate = () => {
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            if (progress < 1) {
+                // Calculate position
+                // Y goes from Bottom (340px) to Top (50px)
+                // X oscillates using Sine wave
+                const startY = 300;
+                const endY = 50;
+                const currentY = startY - ((startY - endY) * progress);
+
+                // Sine wave for X: Center (130px) + Amplitude * Sin
+                const centerX = 130;
+                const amplitude = 60;
+                const frequency = 10; // How many wiggles
+                const currentX = centerX + (Math.sin(progress * frequency) * amplitude);
+
+                // Update CSS variables specifically for the snake animation target
+                const profileCard = document.getElementById('profile-card-container');
+                if (profileCard) {
+                    profileCard.style.setProperty('--x', `${currentX}px`);
+                    profileCard.style.setProperty('--y', `${currentY}px`);
+                }
+
+                requestAnimationFrame(animate);
+            } else {
+                setIsAnimating(false);
+            }
+        };
+
+        const timeout = setTimeout(() => {
+            requestAnimationFrame(animate);
+        }, 500); // Small delay before start
+
+        return () => clearTimeout(timeout);
+    }, []);
     return (
         <section
             id="about-me"
@@ -23,10 +68,17 @@ const About = () => {
                     {/* Profile Picture */}
                     {/* Profile Picture */}
                     <div
+                        id="profile-card-container"
                         className="relative flex-shrink-0 cursor-pointer"
-                        onMouseEnter={() => setIsInteract(true)}
+                        onMouseEnter={() => {
+                            setIsAnimating(false); // Stop animation on interaction
+                            setIsInteract(true);
+                        }}
                         onMouseLeave={() => setIsInteract(false)}
-                        onTouchStart={() => setIsInteract(true)}
+                        onTouchStart={() => {
+                            setIsAnimating(false);
+                            setIsInteract(true);
+                        }}
                         onTouchEnd={() => setIsInteract(false)}
                         onMouseMove={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
@@ -60,7 +112,7 @@ const About = () => {
 
                             {/* Reveal Image (Hover) - Masked by Cursor */}
                             <div
-                                className={`absolute inset-0 z-20 transition-opacity duration-200 ${isInteract ? 'opacity-100' : 'opacity-0'}`}
+                                className={`absolute inset-0 z-20 transition-opacity duration-200 ${isInteract || isAnimating ? 'opacity-100' : 'opacity-0'}`}
                                 style={{
                                     maskImage: `
                                         radial-gradient(circle 40px at var(--x) var(--y), black 100%, transparent 100%),
