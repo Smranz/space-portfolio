@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import NextImage from "next/image";
 import { Cpu, Code2, Globe } from "lucide-react";
 
 const About = () => {
@@ -20,15 +21,18 @@ const About = () => {
                 >
                     {/* Profile Picture */}
                     <div className="relative flex-shrink-0">
-                        <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50">
-                            <img
-                                src="/profile-picture.jpg"
+                        <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50 relative overflow-hidden">
+                            <NextImage
+                                src="/profile-optimized.jpg"
                                 alt="Samran Zahid"
-                                className="w-full h-full rounded-full object-cover"
+                                fill
+                                sizes="(max-width: 768px) 160px, 176px"
+                                className="rounded-full object-cover"
+                                priority
                             />
                         </div>
                         {/* Status Indicator */}
-                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse"></div>
+                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-10"></div>
                     </div>
 
                     {/* Introduction Text */}
