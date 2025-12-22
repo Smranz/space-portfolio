@@ -49,8 +49,8 @@ const About = () => {
                             <div
                                 className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 style={{
-                                    maskImage: "linear-gradient(to right, black calc(var(--x) - 40px), transparent calc(var(--x) + 40px))",
-                                    WebkitMaskImage: "linear-gradient(to right, black calc(var(--x) - 40px), transparent calc(var(--x) + 40px))",
+                                    maskImage: "linear-gradient(105deg, black 0%, black calc(var(--x) - 10px), transparent calc(var(--x) + 10px), transparent 100%)",
+                                    WebkitMaskImage: "linear-gradient(105deg, black 0%, black calc(var(--x) - 10px), transparent calc(var(--x) + 10px), transparent 100%)",
                                 }}
                             >
                                 <NextImage
