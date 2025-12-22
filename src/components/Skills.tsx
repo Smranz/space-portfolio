@@ -369,6 +369,16 @@ export default function Skills() {
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    {/* Scanning Animation */}
+                                                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                                                        <motion.div
+                                                            className="absolute inset-x-0 h-[2px]"
+                                                            style={{ backgroundColor: planet.color }}
+                                                            animate={{ y: [0, 600] }}
+                                                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                        />
+                                                    </div>
                                                 </motion.div>
                                             </motion.div>
                                         ) : (
