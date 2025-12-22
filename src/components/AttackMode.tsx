@@ -48,6 +48,7 @@ const AttackMode = () => {
     const [enemies, setEnemies] = useState<Enemy[]>([]);
     const [explosions, setExplosions] = useState<Explosion[]>([]);
     const [stars, setStars] = useState<Star[]>([]);
+    const [hitEffect, setHitEffect] = useState(false);
     const bulletIdRef = useRef(0);
     const enemyIdRef = useRef(0);
 
@@ -236,6 +237,10 @@ const AttackMode = () => {
                 if (escaped.length > 0) {
                     setLives(l => {
                         const newLives = l - escaped.length;
+                        if (newLives < l) {
+                            setHitEffect(true);
+                            setTimeout(() => setHitEffect(false), 300);
+                        }
                         if (newLives <= 0) {
                             setGameOver(true);
                             setHighScore(h => Math.max(h, score));
@@ -346,6 +351,15 @@ const AttackMode = () => {
                 }}
             />
 
+            {/* Damage Effect Overlay */}
+            <div
+                className={`absolute inset-0 z-[80] pointer-events-none transition-opacity duration-300 ${hitEffect ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                    boxShadow: 'inset 0 0 100px 50px rgba(220, 38, 38, 0.5)',
+                    background: 'radial-gradient(circle, transparent 0%, rgba(220, 38, 38, 0.2) 100%)'
+                }}
+            />
+
             {/* Cockpit Frame */}
             <div className="absolute inset-0 pointer-events-none z-50">
                 {/* Top frame */}
@@ -383,7 +397,7 @@ const AttackMode = () => {
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-black/70 rounded-lg border border-red-500/50 backdrop-blur-sm">
                     <Heart className="w-4 h-4 text-red-500" />
-                    <span className="text-red-400 font-mono text-sm">{lives}</span>
+                    <span className="text-red-400 font-mono text-sm">INTEGRITY: {Math.round((lives / 3) * 100)}%</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-black/70 rounded-lg border border-orange-500/50 backdrop-blur-sm">
                     <span className="text-orange-400 font-mono text-sm">HIGH: {highScore}</span>
