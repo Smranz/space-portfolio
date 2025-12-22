@@ -306,7 +306,7 @@ const CommandCenter = () => {
                     <span className="hidden md:inline ml-2">|</span>
                     <span className="hidden md:inline ml-2">ENCRYPTION: AES-256</span>
                 </div>
-                <div className="absolute bottom-2 right-4 text-[8px] md:text-[10px] font-mono text-cyan-400/70">
+                <div className={`absolute bottom-2 right-4 text-[8px] md:text-[10px] font-mono ${activeView === "attack" ? "text-red-500 animate-pulse font-bold" : "text-cyan-400/70"}`}>
                     <span className="hidden lg:inline">
                         LAT: {coordinates.lat.toFixed(4)}° N | LON: {coordinates.lon.toFixed(4)}° W
                     </span>
