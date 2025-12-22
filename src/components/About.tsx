@@ -21,21 +21,20 @@ const About = () => {
                 >
                     {/* Profile Picture */}
                     {/* Profile Picture */}
-                    <div className="relative flex-shrink-0 group cursor-pointer">
-                        <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50 relative overflow-hidden">
-                            {/* Hover Image (Behind) - Always visible but covered by default */}
-                            <div className="absolute inset-0 rounded-full overflow-hidden">
-                                <NextImage
-                                    src="/profile-hover.png"
-                                    alt="Samran Form"
-                                    fill
-                                    sizes="(max-width: 768px) 160px, 176px"
-                                    className="object-cover"
-                                    priority
-                                />
-                            </div>
-                            {/* Default Image (Front) - Fades out on hover */}
-                            <div className="absolute inset-0 rounded-full overflow-hidden transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10">
+                    <div
+                        className="relative flex-shrink-0 cursor-pointer"
+                        onMouseMove={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            e.currentTarget.style.setProperty('--x', `${x}px`);
+                            e.currentTarget.style.setProperty('--y', `${y}px`);
+                        }}
+                    >
+                        <div className="w-40 h-40 md:w-44 md:h-44 rounded-full border-2 border-cyan-500 p-1 bg-gradient-to-br from-purple-900/50 to-cyan-900/50 relative overflow-hidden group">
+
+                            {/* Base Image (Normal) - Always Visible */}
+                            <div className="absolute inset-0 rounded-full overflow-hidden z-10">
                                 <NextImage
                                     src="/profile-pic.png"
                                     alt="Samran Zahid"
@@ -45,9 +44,27 @@ const About = () => {
                                     priority
                                 />
                             </div>
+
+                            {/* Reveal Image (Hover) - Masked by Cursor */}
+                            <div
+                                className="absolute inset-0 rounded-full overflow-hidden z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                style={{
+                                    maskImage: "radial-gradient(circle 60px at var(--x) var(--y), black 40%, transparent 100%)",
+                                    WebkitMaskImage: "radial-gradient(circle 60px at var(--x) var(--y), black 40%, transparent 100%)",
+                                }}
+                            >
+                                <NextImage
+                                    src="/profile-hover.png"
+                                    alt="Samran Form"
+                                    fill
+                                    sizes="(max-width: 768px) 160px, 176px"
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
                         </div>
                         {/* Status Indicator */}
-                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-20"></div>
+                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#030014] animate-pulse z-30"></div>
                     </div>
 
                     {/* Introduction Text */}
