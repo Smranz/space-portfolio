@@ -14,6 +14,8 @@ const PLANETS = [
         color: "#06b6d4",
         x: 16,
         y: 30,
+        mobileX: 20,
+        mobileY: 25,
         size: 52,
         level: "Advanced",
         description: "Expert in Arduino programming for embedded systems and IoT devices.",
@@ -26,6 +28,8 @@ const PLANETS = [
         color: "#3b82f6",
         x: 26,
         y: 40,
+        mobileX: 75,
+        mobileY: 28,
         size: 48,
         level: "Advanced",
         description: "Proficient in ESP32 development with WiFi and Bluetooth integration.",
@@ -38,6 +42,8 @@ const PLANETS = [
         color: "#ec4899",
         x: 36,
         y: 32,
+        mobileX: 30,
+        mobileY: 40,
         size: 50,
         level: "Intermediate",
         description: "Experience with Raspberry Pi for robotics and automation projects.",
@@ -50,6 +56,8 @@ const PLANETS = [
         color: "#06b6d4",
         x: 52,
         y: 36,
+        mobileX: 70,
+        mobileY: 45,
         size: 64,
         level: "Advanced",
         description: "Building modern, responsive web applications with React ecosystem.",
@@ -62,6 +70,8 @@ const PLANETS = [
         color: "#22c55e",
         x: 45,
         y: 42,
+        mobileX: 25,
+        mobileY: 55,
         size: 46,
         level: "Intermediate",
         description: "Backend development with Node.js and Express for APIs.",
@@ -74,6 +84,8 @@ const PLANETS = [
         color: "#ffffff",
         x: 74,
         y: 28,
+        mobileX: 65,
+        mobileY: 60,
         size: 52,
         level: "Intermediate",
         description: "Full-stack development with Next.js for modern web applications.",
@@ -86,6 +98,8 @@ const PLANETS = [
         color: "#3b82f6",
         x: 88,
         y: 24,
+        mobileX: 80,
+        mobileY: 15,
         size: 54,
         level: "Advanced",
         description: "Low-level programming for embedded systems and performance-critical applications.",
@@ -98,6 +112,8 @@ const PLANETS = [
         color: "#eab308",
         x: 14,
         y: 58,
+        mobileX: 20,
+        mobileY: 70,
         size: 56,
         level: "Intermediate",
         description: "Scripting, automation, and data processing with Python.",
@@ -110,6 +126,8 @@ const PLANETS = [
         color: "#22c55e",
         x: 32,
         y: 60,
+        mobileX: 75,
+        mobileY: 75,
         size: 54,
         level: "Intermediate",
         description: "PCB design and circuit schematic creation using EasyEDA platform.",
@@ -122,6 +140,8 @@ const PLANETS = [
         color: "#3b82f6",
         x: 58,
         y: 56,
+        mobileX: 35,
+        mobileY: 82,
         size: 52,
         level: "Advanced",
         description: "Circuit simulation and PCB design with Proteus professional tools.",
@@ -134,6 +154,8 @@ const PLANETS = [
         color: "#a855f7",
         x: 82,
         y: 58,
+        mobileX: 80,
+        mobileY: 88,
         size: 56,
         level: "Advanced",
         description: "Cloud integration for IoT devices with real-time data synchronization.",
@@ -144,6 +166,14 @@ const PLANETS = [
 
 export default function Skills() {
     const [selected, setSelected] = useState<number | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        handleResize(); // Init
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Lock scroll when planet is selected
     useEffect(() => {
@@ -179,14 +209,17 @@ export default function Skills() {
                     const isSelected = selected === index;
                     const iconSize = planet.size * 0.6;
 
+                    const x = isMobile ? planet.mobileX : planet.x;
+                    const y = isMobile ? planet.mobileY : planet.y;
+
                     return (
                         <div key={index}>
                             {/* Planet */}
                             <motion.div
                                 className="absolute cursor-pointer pointer-events-auto"
                                 style={{
-                                    left: `${planet.x}%`,
-                                    top: `${planet.y}%`,
+                                    left: `${x}%`,
+                                    top: `${y}%`,
                                     transform: "translate(-50%, -50%)",
                                     zIndex: isSelected ? 100 : 10,
                                 }}
