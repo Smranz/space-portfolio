@@ -7,50 +7,86 @@ import { Cpu, Code2, Globe } from "lucide-react";
 
 const About = () => {
     const [isInteract, setIsInteract] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(true);
+    const [isAnimating, setIsAnimating] = useState(false); // Start false to prevent flash
+    const [maskStyle, setMaskStyle] = useState<React.CSSProperties>({});
 
     useEffect(() => {
         // Snake Animation on Mount
-        let startTime = Date.now();
-        const duration = 2000; // 2 seconds
+        // We set isAnimating true after a tiny delay to ensure CSS is ready and prevent 0,0 flash
+        let startTime: number | null = null;
+        let animationFrameId: number;
+        const duration = 2500; // Increased duration for smoother tail
+
+        // Start animation after mount
+        const startTimeout = setTimeout(() => {
+            setIsAnimating(true);
+            startTime = Date.now();
+            animate();
+        }, 800);
 
         const animate = () => {
+            if (!startTime) return;
             const now = Date.now();
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
 
             if (progress < 1) {
-                // Calculate position
-                // Y goes from Bottom (340px) to Top (50px)
-                // X oscillates using Sine wave
-                const startY = 300;
-                const endY = 50;
-                const currentY = startY - ((startY - endY) * progress);
+                // Generate a series of points for the tail
+                // We calculate the position at 'progress' and several lagging points
+                const tailLength = 10;
+                const maskParts = [];
 
-                // Sine wave for X: Center (130px) + Amplitude * Sin
-                const centerX = 130;
-                const amplitude = 60;
-                const frequency = 10; // How many wiggles
-                const currentX = centerX + (Math.sin(progress * frequency) * amplitude);
+                for (let i = 0; i < tailLength; i++) {
+                    // Lag factor (0 is head, 1 is end of tail)
+                    const lag = i * 0.015; // Gap between tail segments
+                    const p = Math.max(0, progress - lag);
 
-                // Update CSS variables specifically for the snake animation target
-                const profileCard = document.getElementById('profile-card-container');
-                if (profileCard) {
-                    profileCard.style.setProperty('--x', `${currentX}px`);
-                    profileCard.style.setProperty('--y', `${currentY}px`);
+                    if (p > 0) {
+                        // Position Math (Same as before)
+                        const startY = 320;
+                        const endY = 40;
+                        const currentY = startY - ((startY - endY) * p);
+
+                        const centerX = 130;
+                        const amplitude = 60;
+                        const frequency = 8;
+                        const currentX = centerX + (Math.sin(p * frequency) * amplitude);
+
+                        // Size tapers off
+                        // Head is 40px, Tail end is 10px
+                        const size = 45 - (i * 3);
+                        const opacity = 1; // Keep opaque for the mask
+
+                        maskParts.push(`radial-gradient(circle ${size}px at ${currentX}px ${currentY}px, black 100%, transparent 100%)`);
+                    }
                 }
 
-                requestAnimationFrame(animate);
+                // Apply the complex mask
+                // We must use a direct ref or state. Since we need to update rapidy, direct ref to maskStyle state is hard.
+                // But we are targeting a specific div.
+                const revealImage = document.getElementById('reveal-image-layer');
+                if (revealImage) {
+                    const maskString = maskParts.join(', ');
+                    revealImage.style.maskImage = maskString;
+                    revealImage.style.webkitMaskImage = maskString;
+                }
+
+                animationFrameId = requestAnimationFrame(animate);
             } else {
                 setIsAnimating(false);
+                // Reset mask to allow normal hover to take over clean
+                const revealImage = document.getElementById('reveal-image-layer');
+                if (revealImage) {
+                    revealImage.style.maskImage = '';
+                    revealImage.style.webkitMaskImage = '';
+                }
             }
         };
 
-        const timeout = setTimeout(() => {
-            requestAnimationFrame(animate);
-        }, 500); // Small delay before start
-
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(startTimeout);
+            cancelAnimationFrame(animationFrameId);
+        };
     }, []);
     return (
         <section
@@ -112,8 +148,9 @@ const About = () => {
 
                             {/* Reveal Image (Hover) - Masked by Cursor */}
                             <div
+                                id="reveal-image-layer"
                                 className={`absolute inset-0 z-20 transition-opacity duration-200 ${isInteract || isAnimating ? 'opacity-100' : 'opacity-0'}`}
-                                style={{
+                                style={!isAnimating ? {
                                     maskImage: `
                                         radial-gradient(circle 40px at var(--x) var(--y), black 100%, transparent 100%),
                                         radial-gradient(circle 30px at calc(var(--x) + 20px) calc(var(--y) - 15px), black 100%, transparent 100%),
@@ -128,7 +165,7 @@ const About = () => {
                                         radial-gradient(circle 25px at calc(var(--x) + 15px) calc(var(--y) + 20px), black 100%, transparent 100%),
                                         radial-gradient(circle 25px at calc(var(--x) - 15px) calc(var(--y) - 20px), black 100%, transparent 100%)
                                     `,
-                                }}
+                                } : undefined}
                             >
                                 <NextImage
                                     src="/profile-hover.png"
