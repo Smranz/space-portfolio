@@ -290,15 +290,19 @@ export default function Skills() {
                                         className="fixed w-72 md:w-80 bg-[#030014]/95 backdrop-blur-xl border-2 rounded-lg p-4 pointer-events-auto overflow-hidden"
                                         style={{
                                             // Safe positioning logic
-                                            left: planet.x > 70 ? '10%' : (planet.x < 30 ? `${planet.x + 25}%` : `${planet.x}%`),
-                                            top: planet.y > 50 ? '30%' : `${planet.y}%`,
-                                            transform: planet.x > 70
-                                                ? 'translateY(-50%)'
-                                                : (planet.x < 30
+                                            left: isMobile ? '50%' : (planet.x > 70 ? '10%' : (planet.x < 30 ? `${planet.x + 25}%` : `${planet.x}%`)),
+                                            top: isMobile ? '50%' : (planet.y > 50 ? '30%' : `${planet.y}%`),
+                                            transform: isMobile
+                                                ? 'translate(-50%, -50%)'
+                                                : (planet.x > 70
                                                     ? 'translateY(-50%)'
-                                                    : (planet.x > 50
-                                                        ? 'translate(calc(-100% - 200px), -50%)'
-                                                        : 'translate(200px, -50%)')),
+                                                    : (planet.x < 30
+                                                        ? 'translateY(-50%)'
+                                                        : (planet.x > 50
+                                                            ? 'translate(calc(-100% - 200px), -50%)'
+                                                            : 'translate(200px, -50%)'))),
+                                            width: isMobile ? '90%' : undefined,
+                                            maxWidth: isMobile ? '350px' : undefined,
                                             borderColor: planet.color,
                                             boxShadow: `0 0 30px ${planet.color}40`,
                                             zIndex: 200,
