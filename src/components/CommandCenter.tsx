@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, User, Code, Rocket, Mail, Power, Wifi, Cpu, Database, Github, Linkedin, Instagram, Crosshair } from "lucide-react";
 import Hero from "./Hero";
@@ -66,6 +66,23 @@ type ViewType = "home" | "about" | "skills" | "projects" | "contact" | "attack";
 const CommandCenter = () => {
     const [activeView, setActiveView] = useState<ViewType>("home");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [coordinates, setCoordinates] = useState({ lat: 34.0522, lon: 118.2437 });
+
+    // Dynamic coordinates effect for Attack Mode
+    useEffect(() => {
+        if (activeView === "attack") {
+            const interval = setInterval(() => {
+                setCoordinates(prev => ({
+                    lat: prev.lat + (Math.random() - 0.5) * 0.01,
+                    lon: prev.lon + (Math.random() - 0.5) * 0.01
+                }));
+            }, 100);
+            return () => clearInterval(interval);
+        } else {
+            // Reset to base coordinates when not in attack mode
+            setCoordinates({ lat: 34.0522, lon: 118.2437 });
+        }
+    }, [activeView]);
 
     const controls = [
         { id: "home", label: "MAIN", icon: Terminal, color: "cyan" },
@@ -290,7 +307,9 @@ const CommandCenter = () => {
                     <span className="hidden md:inline ml-2">ENCRYPTION: AES-256</span>
                 </div>
                 <div className="absolute bottom-2 right-4 text-[8px] md:text-[10px] font-mono text-cyan-400/70">
-                    <span className="hidden lg:inline">LAT: 34.0522° N | LON: 118.2437° W</span>
+                    <span className="hidden lg:inline">
+                        LAT: {coordinates.lat.toFixed(4)}° N | LON: {coordinates.lon.toFixed(4)}° W
+                    </span>
                 </div>
             </div>
 
