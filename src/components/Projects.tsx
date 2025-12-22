@@ -39,13 +39,13 @@ const Projects = () => {
     return (
         <section
             id="projects"
-            className="flex flex-col items-center justify-center py-4 h-full relative z-[20]"
+            className="flex flex-col items-center justify-start py-8 h-full relative z-[20] overflow-y-auto no-scrollbar"
         >
-            <h1 className="text-xl md:text-[28px] font-semibold text-white py-2 md:py-3 font-orbitron">
+            <h1 className="text-xl md:text-[28px] font-semibold text-white mt-20 mb-6 font-orbitron">
                 Mission Log
             </h1>
 
-            <div className="h-full w-full flex flex-col md:flex-row gap-4 px-4 max-w-6xl">
+            <div className="w-full flex-1 flex flex-col justify-center px-4 max-w-6xl pb-32">
                 <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={30}
@@ -61,7 +61,7 @@ const Projects = () => {
                 >
                     {projects.map((project, index) => (
                         <SwiperSlide key={index} className="pb-8">
-                            <div className="group relative overflow-hidden rounded-2xl border border-[#7042f861] bg-[#0300145e] backdrop-blur-md p-4 h-[320px] flex flex-col justify-between hover:shadow-[0_0_20px_rgba(112,66,248,0.5)] transition-all duration-300">
+                            <div className="group relative overflow-hidden rounded-2xl border border-[#7042f861] bg-[#0300145e] backdrop-blur-md p-4 min-h-[320px] h-auto flex flex-col justify-between hover:shadow-[0_0_20px_rgba(112,66,248,0.5)] transition-all duration-300">
 
                                 <div className="absolute top-0 left-0 w-full h-[120px] bg-gradient-to-br from-purple-900/50 to-cyan-900/50 -z-10 group-hover:h-full transition-all duration-500 ease-out"></div>
 
