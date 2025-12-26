@@ -30,6 +30,9 @@ const Projects = () => {
         "/projects/f1-steering/steering-3.jpg",
         "/projects/f1-steering/steering-4.jpg",
         "/projects/f1-steering/steering-5.jpg",
+        "/projects/f1-steering/steering-6.jpg",
+        "/projects/f1-steering/steering-7.jpg",
+        "/projects/f1-steering/steering-8.jpg",
     ];
 
     const projects = [
