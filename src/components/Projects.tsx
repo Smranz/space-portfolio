@@ -35,6 +35,8 @@ const Projects = () => {
         "/projects/f1-steering/steering-8.jpg",
     ];
 
+    const steeringVideo = "/projects/f1-steering/f1-steering-video.mp4";
+
     const projects = [
         {
             id: "cansat",
@@ -67,6 +69,8 @@ const Projects = () => {
             icon: <Bot className="w-20 h-20 text-yellow-400 group-hover:text-white transition-colors" />,
         },
     ];
+
+    const isVideo = (path: string) => path.endsWith('.mp4') || path.endsWith('.webm');
 
     return (
         <section
@@ -176,6 +180,28 @@ const Projects = () => {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                        {/* Video Card First */}
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="relative aspect-square rounded-xl overflow-hidden border-2 border-purple-500/60 group cursor-pointer bg-purple-900/20"
+                            onClick={() => setSelectedImage(steeringVideo)}
+                        >
+                            <video
+                                src={steeringVideo}
+                                className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
+                                muted
+                                loop
+                                onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
+                                onMouseOut={(e) => { (e.target as HTMLVideoElement).pause(); (e.target as HTMLVideoElement).currentTime = 0; }}
+                            />
+                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40 group-hover:bg-transparent transition-colors">
+                                <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                                    <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[15px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+                                </div>
+                                <span className="text-xs font-bold text-white font-orbitron tracking-tighter shadow-black drop-shadow-lg">PLAY MISSION VIDEO</span>
+                            </div>
+                        </motion.div>
+
                         {steeringImages.map((src, index) => (
                             <motion.div
                                 key={index}
@@ -205,28 +231,37 @@ const Projects = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-10"
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-10"
                         onClick={() => setSelectedImage(null)}
                     >
                         <button
-                            className="absolute top-10 right-10 text-white hover:text-cyan-400 transition-colors z-[110]"
+                            className="absolute top-10 right-10 text-white hover:text-cyan-400 transition-colors z-[110] bg-black/50 rounded-full p-2"
                             onClick={() => setSelectedImage(null)}
                         >
-                            <X className="w-10 h-10" />
+                            <X className="w-8 h-8 md:w-10 md:h-10" />
                         </button>
                         <motion.div
-                            initial={{ scale: 0.9 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0.9 }}
-                            className="relative w-full h-full max-w-5xl max-h-[80vh]"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="relative w-full h-full max-w-5xl max-h-[85vh] flex items-center justify-center"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <Image
-                                src={selectedImage}
-                                alt="Full size mission asset"
-                                fill
-                                className="object-contain"
-                            />
+                            {isVideo(selectedImage) ? (
+                                <video
+                                    src={selectedImage}
+                                    controls
+                                    autoPlay
+                                    className="max-w-full max-h-full rounded-lg shadow-[0_0_50px_rgba(112,66,248,0.3)]"
+                                />
+                            ) : (
+                                <Image
+                                    src={selectedImage}
+                                    alt="Full size mission asset"
+                                    fill
+                                    className="object-contain"
+                                />
+                            )}
                         </motion.div>
                     </motion.div>
                 )}
