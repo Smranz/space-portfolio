@@ -24,8 +24,17 @@ const Projects = () => {
         "/projects/cansat/cansat-8.jpg",
     ];
 
+    const steeringImages = [
+        "/projects/f1-steering/steering-1.jpg",
+        "/projects/f1-steering/steering-2.jpg",
+        "/projects/f1-steering/steering-3.jpg",
+        "/projects/f1-steering/steering-4.jpg",
+        "/projects/f1-steering/steering-5.jpg",
+    ];
+
     const projects = [
         {
+            id: "cansat",
             title: "CANSAT",
             description: "Atmospheric data collection satellite subsystem simulation. Designed for high-altitude sensor data transmission and real-time telemetry.",
             tech: ["Arduino", "Sensors", "Radio", "Telemetry"],
@@ -33,18 +42,22 @@ const Projects = () => {
             hasGallery: true
         },
         {
+            id: "f1-steering",
             title: "F1 Steering With GUI",
             description: "Custom F1-style steering wheel with integrated display telelmetry and force feedback integration.",
             tech: ["ESP32", "Nextion", "C++", "CAN Bus"],
             icon: <Car className="w-20 h-20 text-purple-400 group-hover:text-white transition-colors" />,
+            hasGallery: true
         },
         {
+            id: "rc-car",
             title: "RC Car",
             description: "High-speed remote controlled vehicle with custom chassis, motor driver, and long-range RF control.",
             tech: ["Motor Drivers", "RF", "Power Systems", "PWM"],
             icon: <Radio className="w-20 h-20 text-pink-400 group-hover:text-white transition-colors" />,
         },
         {
+            id: "logistic-robot",
             title: "Logistic Autonomous Robot",
             description: "Autonomous navigation robot for warehouse logistics with obstacle avoidance and path planning.",
             tech: ["ROS", "Lidar", "Python", "Computer Vision"],
@@ -102,7 +115,7 @@ const Projects = () => {
                                     className="mt-6 flex items-center text-cyan-400 text-sm font-bold group-hover:translate-x-2 transition-transform cursor-pointer"
                                     onClick={() => {
                                         if (project.hasGallery) {
-                                            document.getElementById('cansat-gallery')?.scrollIntoView({ behavior: 'smooth' });
+                                            document.getElementById(`${project.id}-gallery`)?.scrollIntoView({ behavior: 'smooth' });
                                         }
                                     }}
                                 >
@@ -115,7 +128,7 @@ const Projects = () => {
             </div>
 
             {/* CanSat Mission Gallery Section */}
-            <div id="cansat-gallery" className="w-full max-w-6xl px-4 mt-8 pb-20">
+            <div id="cansat-gallery" className="w-full max-w-6xl px-4 mt-8 pb-10">
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-4">
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-cyan-500/50"></div>
@@ -140,6 +153,40 @@ const Projects = () => {
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                                 <div className="absolute inset-0 bg-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <Maximize2 className="text-white w-6 h-6" />
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* F1 Steering Mission Gallery Section */}
+            <div id="f1-steering-gallery" className="w-full max-w-6xl px-4 mt-8 pb-20">
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-4">
+                        <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-purple-500/50"></div>
+                        <h2 className="text-lg md:text-xl font-bold text-purple-400 font-orbitron tracking-wider">
+                            MISSION ASSETS: F1 STEERING
+                        </h2>
+                        <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-purple-500/50"></div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                        {steeringImages.map((src, index) => (
+                            <motion.div
+                                key={index}
+                                whileHover={{ scale: 1.05 }}
+                                className="relative aspect-square rounded-xl overflow-hidden border border-purple-500/30 group cursor-pointer bg-black/40"
+                                onClick={() => setSelectedImage(src)}
+                            >
+                                <Image
+                                    src={src}
+                                    alt={`F1 Steering mission asset ${index + 1}`}
+                                    fill
+                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <Maximize2 className="text-white w-6 h-6" />
                                 </div>
                             </motion.div>
