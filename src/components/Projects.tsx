@@ -13,8 +13,6 @@ import { createPortal } from "react-dom";
 
 // Sub-component for the global lightbox to avoid stacking context issues
 const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; onClose: () => void }) => {
-    const [isLoading, setIsLoading] = React.useState(true);
-
     // Prevent body scroll when lightbox is open
     React.useEffect(() => {
         const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -39,19 +37,19 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             }}
             onClick={onClose}
         >
-            {/* HUD Scanning Line */}
+            {/* HUD Scanning Line - Made sublte to not block view */}
             <motion.div
-                className="absolute left-0 right-0 h-[1px] bg-cyan-500/30 shadow-[0_0_20px_rgba(0,255,255,0.4)] z-[100000] pointer-events-none"
+                className="absolute left-0 right-0 h-[1px] bg-cyan-500/10 shadow-[0_0_15px_rgba(0,255,255,0.2)] z-[100000] pointer-events-none"
                 animate={{ top: ['0%', '100%', '0%'] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
 
             {/* Corner Brackets */}
             <div className="absolute inset-4 md:inset-12 border border-white/5 pointer-events-none">
-                <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-cyan-500/40" />
-                <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-cyan-500/40" />
-                <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-cyan-500/40" />
-                <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-cyan-500/40" />
+                <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-cyan-500/30" />
+                <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-cyan-500/30" />
+                <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-cyan-500/30" />
+                <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-cyan-500/30" />
             </div>
 
             <motion.button
@@ -64,64 +62,47 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             </motion.button>
 
             <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="relative w-full h-full max-w-[90vw] max-h-[85vh] flex items-center justify-center group"
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", damping: 20, stiffness: 200 }}
+                className="relative w-full h-full max-w-[95vw] max-h-[90vh] flex items-center justify-center group"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="relative w-full h-full flex items-center justify-center rounded-3xl overflow-hidden border border-white/10 bg-black/60 shadow-[0_0_120px_rgba(0,0,0,1)]">
-
-                    {/* Loading State Overlay */}
-                    {isLoading && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20">
-                            <div className="w-20 h-20 border-2 border-cyan-500/20 rounded-full flex items-center justify-center relative">
-                                <motion.div
-                                    className="absolute inset-0 border-t-2 border-cyan-500 rounded-full"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                />
-                                <Satellite className="w-8 h-8 text-cyan-500 animate-pulse" />
-                            </div>
-                            <span className="mt-6 font-mono text-cyan-500 text-[10px] tracking-[0.4em] uppercase animate-pulse">
-                                DECODING_ASSET_DATA...
-                            </span>
-                        </div>
-                    )}
 
                     {isVideo ? (
                         <video
                             src={src}
                             controls
                             autoPlay
-                            onLoadedData={() => setIsLoading(false)}
-                            className={`max-w-full max-h-full object-contain transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                            muted
+                            className="max-w-full max-h-full object-contain"
                         />
                     ) : (
-                        <div className={`relative w-full h-full flex items-center justify-center p-2 transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-                            <Image
+                        <div className="relative w-full h-full flex items-center justify-center">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
                                 src={src}
                                 alt="Classified Asset View"
-                                fill
-                                className="object-contain p-2"
-                                priority={true}
-                                onLoadingComplete={() => setIsLoading(false)}
+                                className="max-w-full max-h-full object-contain rounded-lg"
+                                loading="eager"
+                                decoding="async"
                             />
                         </div>
                     )}
 
                     {/* Persistent HUD Overlay */}
-                    <div className="absolute top-6 left-6 p-4 bg-black/60 border-l-2 border-cyan-500 backdrop-blur-md rounded-r-lg z-30">
+                    <div className="absolute top-6 left-6 p-4 bg-black/60 border-l-2 border-cyan-500 backdrop-blur-md rounded-r-lg z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                         <div className="flex flex-col gap-1.5 font-mono text-[9px] md:text-[10px] text-cyan-500/90">
                             <span className="flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_#ef4444]" />
-                                CONNECTION: SECURE_UPLINK
+                                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00e5ff]" />
+                                DOWNLOAD_LINK: ESTABLISHED
                             </span>
                             <div className="flex items-center gap-3 opacity-60">
-                                <span>SIGNAL: 100%</span>
+                                <span>TYPE: {isVideo ? 'MP4_FEED' : 'RAW_IMG'}</span>
                                 <span className="w-[1px] h-3 bg-cyan-500/30" />
-                                <span>TYPE: {isVideo ? 'VIDEO_STREAM' : 'STATIC_ENTRY'}</span>
+                                <span>PROTOCOL: ALPHA-7</span>
                             </div>
                         </div>
                     </div>
