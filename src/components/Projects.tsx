@@ -15,8 +15,11 @@ import { createPortal } from "react-dom";
 const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; onClose: () => void }) => {
     // Prevent body scroll when lightbox is open
     React.useEffect(() => {
+        const originalStyle = window.getComputedStyle(document.body).overflow;
         document.body.style.overflow = 'hidden';
-        return () => { document.body.style.overflow = 'unset'; };
+        return () => {
+            document.body.style.overflow = originalStyle;
+        };
     }, []);
 
     const content = (
@@ -24,71 +27,83 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#030014]/98 backdrop-blur-3xl px-4 md:px-20 py-10"
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#000000]/95 backdrop-blur-3xl"
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+            }}
             onClick={onClose}
         >
-            {/* Global HUD Scanning Line */}
+            {/* HUD Scanning Line */}
             <motion.div
-                className="absolute left-0 right-0 h-[1px] bg-cyan-500/20 shadow-[0_0_15px_rgba(0,255,255,0.3)] z-[10000] pointer-events-none"
+                className="absolute left-0 right-0 h-[1px] bg-cyan-500/30 shadow-[0_0_20px_rgba(0,255,255,0.4)] z-[100000] pointer-events-none"
                 animate={{ top: ['0%', '100%', '0%'] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
             />
 
-            {/* HUD Corners for Lightbox */}
-            <div className="absolute top-10 left-10 w-20 h-20 border-l-2 border-t-2 border-cyan-500/30 pointer-events-none" />
-            <div className="absolute top-10 right-10 w-20 h-20 border-r-2 border-t-2 border-cyan-500/30 pointer-events-none" />
-            <div className="absolute bottom-10 left-10 w-20 h-20 border-l-2 border-b-2 border-cyan-500/30 pointer-events-none" />
-            <div className="absolute bottom-10 right-10 w-20 h-20 border-r-2 border-b-2 border-cyan-500/30 pointer-events-none" />
+            {/* Corner Brackets */}
+            <div className="absolute inset-4 md:inset-10 border border-white/5 pointer-events-none">
+                <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-cyan-500/40" />
+                <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-cyan-500/40" />
+                <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-cyan-500/40" />
+                <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-cyan-500/40" />
+            </div>
 
             <motion.button
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                className="absolute top-8 right-8 text-white/50 hover:text-red-500 transition-all z-[110] bg-white/5 border border-white/10 rounded-full p-4 backdrop-blur-xl hover:scale-110 active:scale-95 group shadow-2xl"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="absolute top-6 right-6 md:top-12 md:right-12 text-white/40 hover:text-red-500 transition-all z-[110000] bg-white/5 border border-white/10 rounded-full p-4 md:p-5 backdrop-blur-xl hover:scale-110 active:scale-95 group shadow-2xl"
                 onClick={onClose}
             >
-                <X className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" />
+                <X className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-90 transition-transform duration-300" />
             </motion.button>
 
             <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                className="relative w-full h-full flex items-center justify-center max-w-7xl group"
+                initial={{ scale: 0.8, opacity: 0, scaleZ: 0.5 }}
+                animate={{ scale: 1, opacity: 1, scaleZ: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="relative w-full h-full max-w-[90vw] max-h-[85vh] flex items-center justify-center group"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="relative w-full h-full flex items-center justify-center rounded-2xl overflow-hidden border border-white/5 bg-black/40 shadow-[0_0_100px_rgba(0,0,0,0.8)] px-2">
+                <div className="relative w-full h-full flex items-center justify-center rounded-3xl overflow-hidden border border-white/10 bg-black/60 shadow-[0_0_120px_rgba(0,0,0,1)]">
                     {isVideo ? (
                         <video
                             src={src}
                             controls
                             autoPlay
-                            className="max-w-full max-h-[85vh] rounded-lg border border-white/10"
+                            className="max-w-full max-h-full object-contain"
                         />
                     ) : (
-                        <div className="relative w-full h-full flex items-center justify-center">
+                        <div className="relative w-full h-full flex items-center justify-center p-2">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={src}
-                                alt="Classified Mission Asset"
-                                className="max-w-full max-h-[85vh] object-contain rounded-lg border border-white/10"
+                                alt="Classified Asset View"
+                                className="max-w-full max-h-full object-contain rounded-lg"
                             />
                         </div>
                     )}
 
-                    {/* Asset Metadata HUD - Visible on Hover */}
-                    <div className="absolute bottom-6 left-6 flex flex-col gap-1 font-mono text-[10px] text-cyan-500/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <span className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                            ASSET_IDENTIFIED: CLASSIFIED
-                        </span>
-                        <span>RESOLUTION: OPTIMIZED_HD</span>
-                        <span>FEED_STATUS: ENCRYPTED_STABLE</span>
+                    {/* Persistent HUD Overlay */}
+                    <div className="absolute top-6 left-6 p-3 bg-black/40 border-l-2 border-cyan-500 backdrop-blur-md rounded-r-md">
+                        <div className="flex flex-col gap-1 font-mono text-[9px] md:text-[10px] text-cyan-500/80">
+                            <span className="flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[ping_1.5s_infinite]" />
+                                ENCRYPTED_LINK: ACTIVE
+                            </span>
+                            <span className="opacity-50 tracking-[0.2em]">SATELLITE_UPLINK: SECURE</span>
+                        </div>
                     </div>
                 </div>
             </motion.div>
         </motion.div>
     );
 
+    if (typeof document === 'undefined') return null;
     return createPortal(content, document.body);
 };
 
