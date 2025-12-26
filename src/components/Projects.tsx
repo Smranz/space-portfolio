@@ -24,6 +24,8 @@ const Projects = () => {
         "/projects/cansat/cansat-8.jpg",
     ];
 
+    const cansatVideos = ["/projects/cansat/cansat-video-1.mp4"];
+
     const steeringImages = [
         "/projects/f1-steering/steering-1.jpg",
         "/projects/f1-steering/steering-2.jpg",
@@ -35,7 +37,10 @@ const Projects = () => {
         "/projects/f1-steering/steering-8.jpg",
     ];
 
-    const steeringVideo = "/projects/f1-steering/f1-steering-video.mp4";
+    const steeringVideos = [
+        "/projects/f1-steering/f1-steering-video.mp4",
+        "/projects/f1-steering/f1-steering-video-2.mp4",
+    ];
 
     const projects = [
         {
@@ -146,6 +151,29 @@ const Projects = () => {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                        {cansatVideos.map((video, idx) => (
+                            <motion.div
+                                key={`v-${idx}`}
+                                whileHover={{ scale: 1.05 }}
+                                className="relative aspect-square rounded-xl overflow-hidden border-2 border-cyan-500/60 group cursor-pointer bg-cyan-900/20"
+                                onClick={() => setSelectedImage(video)}
+                            >
+                                <video
+                                    src={video}
+                                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
+                                    muted
+                                    loop
+                                    onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
+                                    onMouseOut={(e) => { (e.target as HTMLVideoElement).pause(); (e.target as HTMLVideoElement).currentTime = 0; }}
+                                />
+                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40 group-hover:bg-transparent transition-colors">
+                                    <div className="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center">
+                                        <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[12px] border-l-white border-b-[6px] border-b-transparent ml-1" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-white font-orbitron tracking-tighter shadow-black drop-shadow-lg">MISSION VIDEO</span>
+                                </div>
+                            </motion.div>
+                        ))}
                         {cansatImages.map((src, index) => (
                             <motion.div
                                 key={index}
@@ -180,27 +208,29 @@ const Projects = () => {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-                        {/* Video Card First */}
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            className="relative aspect-square rounded-xl overflow-hidden border-2 border-purple-500/60 group cursor-pointer bg-purple-900/20"
-                            onClick={() => setSelectedImage(steeringVideo)}
-                        >
-                            <video
-                                src={steeringVideo}
-                                className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
-                                muted
-                                loop
-                                onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
-                                onMouseOut={(e) => { (e.target as HTMLVideoElement).pause(); (e.target as HTMLVideoElement).currentTime = 0; }}
-                            />
-                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40 group-hover:bg-transparent transition-colors">
-                                <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
-                                    <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[15px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+                        {steeringVideos.map((video, idx) => (
+                            <motion.div
+                                key={`v-${idx}`}
+                                whileHover={{ scale: 1.05 }}
+                                className="relative aspect-square rounded-xl overflow-hidden border-2 border-purple-500/60 group cursor-pointer bg-purple-900/20"
+                                onClick={() => setSelectedImage(video)}
+                            >
+                                <video
+                                    src={video}
+                                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
+                                    muted
+                                    loop
+                                    onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
+                                    onMouseOut={(e) => { (e.target as HTMLVideoElement).pause(); (e.target as HTMLVideoElement).currentTime = 0; }}
+                                />
+                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/40 group-hover:bg-transparent transition-colors">
+                                    <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center">
+                                        <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[12px] border-l-white border-b-[6px] border-b-transparent ml-1" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-white font-orbitron tracking-tighter shadow-black drop-shadow-lg">MISSION VIDEO {steeringVideos.length > 1 ? idx + 1 : ''}</span>
                                 </div>
-                                <span className="text-xs font-bold text-white font-orbitron tracking-tighter shadow-black drop-shadow-lg">PLAY MISSION VIDEO</span>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        ))}
 
                         {steeringImages.map((src, index) => (
                             <motion.div
