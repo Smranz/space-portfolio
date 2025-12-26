@@ -13,6 +13,8 @@ import { createPortal } from "react-dom";
 
 // Sub-component for the global lightbox to avoid stacking context issues
 const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; onClose: () => void }) => {
+    const [isLoading, setIsLoading] = React.useState(true);
+
     // Prevent body scroll when lightbox is open
     React.useEffect(() => {
         const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -27,7 +29,7 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#000000]/95 backdrop-blur-3xl"
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#000000]/98 backdrop-blur-3xl"
             style={{
                 position: 'fixed',
                 top: 0,
@@ -45,7 +47,7 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             />
 
             {/* Corner Brackets */}
-            <div className="absolute inset-4 md:inset-10 border border-white/5 pointer-events-none">
+            <div className="absolute inset-4 md:inset-12 border border-white/5 pointer-events-none">
                 <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-cyan-500/40" />
                 <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-cyan-500/40" />
                 <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-cyan-500/40" />
@@ -55,47 +57,72 @@ const Lightbox = ({ src, isVideo, onClose }: { src: string; isVideo: boolean; on
             <motion.button
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="absolute top-6 right-6 md:top-12 md:right-12 text-white/40 hover:text-red-500 transition-all z-[110000] bg-white/5 border border-white/10 rounded-full p-4 md:p-5 backdrop-blur-xl hover:scale-110 active:scale-95 group shadow-2xl"
+                className="absolute top-6 right-6 md:top-10 md:right-10 text-white/40 hover:text-red-500 transition-all z-[110000] bg-white/5 border border-white/10 rounded-full p-4 md:p-5 backdrop-blur-xl group shadow-2xl"
                 onClick={onClose}
             >
                 <X className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-90 transition-transform duration-300" />
             </motion.button>
 
             <motion.div
-                initial={{ scale: 0.8, opacity: 0, scaleZ: 0.5 }}
-                animate={{ scale: 1, opacity: 1, scaleZ: 1 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="relative w-full h-full max-w-[90vw] max-h-[85vh] flex items-center justify-center group"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="relative w-full h-full flex items-center justify-center rounded-3xl overflow-hidden border border-white/10 bg-black/60 shadow-[0_0_120px_rgba(0,0,0,1)]">
+
+                    {/* Loading State Overlay */}
+                    {isLoading && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20">
+                            <div className="w-20 h-20 border-2 border-cyan-500/20 rounded-full flex items-center justify-center relative">
+                                <motion.div
+                                    className="absolute inset-0 border-t-2 border-cyan-500 rounded-full"
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                />
+                                <Satellite className="w-8 h-8 text-cyan-500 animate-pulse" />
+                            </div>
+                            <span className="mt-6 font-mono text-cyan-500 text-[10px] tracking-[0.4em] uppercase animate-pulse">
+                                DECODING_ASSET_DATA...
+                            </span>
+                        </div>
+                    )}
+
                     {isVideo ? (
                         <video
                             src={src}
                             controls
                             autoPlay
-                            className="max-w-full max-h-full object-contain"
+                            onLoadedData={() => setIsLoading(false)}
+                            className={`max-w-full max-h-full object-contain transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
                         />
                     ) : (
-                        <div className="relative w-full h-full flex items-center justify-center p-2">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                        <div className={`relative w-full h-full flex items-center justify-center p-2 transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                            <Image
                                 src={src}
                                 alt="Classified Asset View"
-                                className="max-w-full max-h-full object-contain rounded-lg"
+                                fill
+                                className="object-contain p-2"
+                                priority={true}
+                                onLoadingComplete={() => setIsLoading(false)}
                             />
                         </div>
                     )}
 
                     {/* Persistent HUD Overlay */}
-                    <div className="absolute top-6 left-6 p-3 bg-black/40 border-l-2 border-cyan-500 backdrop-blur-md rounded-r-md">
-                        <div className="flex flex-col gap-1 font-mono text-[9px] md:text-[10px] text-cyan-500/80">
+                    <div className="absolute top-6 left-6 p-4 bg-black/60 border-l-2 border-cyan-500 backdrop-blur-md rounded-r-lg z-30">
+                        <div className="flex flex-col gap-1.5 font-mono text-[9px] md:text-[10px] text-cyan-500/90">
                             <span className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[ping_1.5s_infinite]" />
-                                ENCRYPTED_LINK: ACTIVE
+                                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_#ef4444]" />
+                                CONNECTION: SECURE_UPLINK
                             </span>
-                            <span className="opacity-50 tracking-[0.2em]">SATELLITE_UPLINK: SECURE</span>
+                            <div className="flex items-center gap-3 opacity-60">
+                                <span>SIGNAL: 100%</span>
+                                <span className="w-[1px] h-3 bg-cyan-500/30" />
+                                <span>TYPE: {isVideo ? 'VIDEO_STREAM' : 'STATIC_ENTRY'}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,6 +348,8 @@ const Projects = () => {
                                                     alt={`${activeProjectData.title} asset ${index}`}
                                                     fill
                                                     className="object-cover transition-all duration-700 group-hover:scale-110 grayscale-[30%] group-hover:grayscale-0"
+                                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                                    loading="eager"
                                                 />
                                                 <div className={`absolute inset-0 bg-gradient-to-t from-${activeProjectData.color}-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center`}>
                                                     <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
